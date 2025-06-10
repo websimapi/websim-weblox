@@ -84,9 +84,9 @@
         </div>
     </div>
 
-    <script async src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script async src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/SkyShader.js"></script>
-    <script async src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CloudShader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/SkyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CloudShader.js"></script>
     <script>
         let scene, camera, renderer, sky, sunSphere;
 
@@ -100,14 +100,23 @@
             });
             renderer.setSize(window.innerWidth, window.innerHeight);
 
-            // Sky shader
-            sky = new THREE.Sky();
-            sky.scale.setScalar(450000);
+            // Sky shader - use Sky from THREE.ShaderLib
+            sky = new THREE.Mesh(
+                new THREE.SphereGeometry(450000, 32, 32),
+                new THREE.ShaderMaterial({
+                    name: 'SkyShader',
+                    uniforms: THREE.ShaderLib['sky'].uniforms,
+                    vertexShader: THREE.ShaderLib['sky'].vertexShader,
+                    fragmentShader: THREE.ShaderLib['sky'].fragmentShader,
+                    side: THREE.BackSide,
+                    depthWrite: false
+                })
+            );
             scene.add(sky);
 
             // Sun
             sunSphere = new THREE.Mesh(
-                new THREE.SphereBufferGeometry(20000, 16, 8),
+                new THREE.SphereGeometry(20000, 16, 8),
                 new THREE.MeshBasicMaterial({ color: 0xffffff })
             );
             sunSphere.position.y = -700000;
