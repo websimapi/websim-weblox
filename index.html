@@ -9,28 +9,20 @@
             font-family: 'RobloxFont';
             src: url('/RobloxFont121Regular-axoyE.ttf') format('truetype');
         }
-        body, html {
+        body {
             margin: 0;
             padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-        #background-scene {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        .content {
-            position: relative;
-            z-index: 1;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background-color: black;
+            font-family: Arial, sans-serif;
             text-align: center;
+            background-image: url('/weblox_background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         .title {
             color: white;
@@ -44,18 +36,48 @@
             display: inline-block;
             transition: color 1.5s ease-in-out;
         }
-        .title span:nth-child(1) { animation: colorWave1 4s infinite; }
-        .title span:nth-child(2) { animation: colorWave2 4s infinite; }
-        .title span:nth-child(3) { animation: colorWave3 4s infinite; }
-        .title span:nth-child(4) { animation: colorWave4 4s infinite; }
-        .title span:nth-child(5) { animation: colorWave5 4s infinite; }
-        .title span:nth-child(6) { animation: colorWave6 4s infinite; }
-        @keyframes colorWave1 { 0%, 100% { color: white; } 50% { color: #4d85e2; } }
-        @keyframes colorWave2 { 0%, 100% { color: white; } 50% { color: #de5045; } }
-        @keyframes colorWave3 { 0%, 100% { color: white; } 50% { color: #e6bd48; } }
-        @keyframes colorWave4 { 0%, 100% { color: white; } 50% { color: #4d85e2; } }
-        @keyframes colorWave5 { 0%, 100% { color: white; } 50% { color: #58a46c; } }
-        @keyframes colorWave6 { 0%, 100% { color: white; } 50% { color: #de5045; } }
+        .title span:nth-child(1) { /* W */
+            animation: colorWave1 4s infinite;
+        }
+        .title span:nth-child(2) { /* E */
+            animation: colorWave2 4s infinite;
+        }
+        .title span:nth-child(3) { /* B */
+            animation: colorWave3 4s infinite;
+        }
+        .title span:nth-child(4) { /* L */
+            animation: colorWave4 4s infinite;
+        }
+        .title span:nth-child(5) { /* O */
+            animation: colorWave5 4s infinite;
+        }
+        .title span:nth-child(6) { /* X */
+            animation: colorWave6 4s infinite;
+        }
+        @keyframes colorWave1 {
+            0%, 100% { color: white; }
+            50% { color: #4d85e2; }
+        }
+        @keyframes colorWave2 {
+            0%, 100% { color: white; }
+            50% { color: #de5045; }
+        }
+        @keyframes colorWave3 {
+            0%, 100% { color: white; }
+            50% { color: #e6bd48; }
+        }
+        @keyframes colorWave4 {
+            0%, 100% { color: white; }
+            50% { color: #4d85e2; }
+        }
+        @keyframes colorWave5 {
+            0%, 100% { color: white; }
+            50% { color: #58a46c; }
+        }
+        @keyframes colorWave6 {
+            0%, 100% { color: white; }
+            50% { color: #de5045; }
+        }
         .subtitle {
             color: white;
             font-size: 1.5rem;
@@ -70,105 +92,14 @@
     </style>
 </head>
 <body>
-    <canvas id="background-scene"></canvas>
-    <div class="content">
-        <div>
-            <div class="title">
-                <span>W</span><span>E</span><span>B</span><span>L</span><span>O</span><span>X</span>
-            </div>
-            <div class="subtitle">Websim Created Gaming</div>
-            <div class="subtitle">Limitless Creation</div>
-            <br><br><br>
-            <br><br><br>
-            <div class="press-prompt">Press Any Button To Begin</div>
+    <div>
+        <div class="title">
+            <span>W</span><span>E</span><span>B</span><span>L</span><span>O</span><span>X</span>
         </div>
+        <div class="subtitle">Websim Created Gaming</div>
+        <div class="subtitle">Limitless Creation</div>
+        <div class="press-prompt">Press Any Button To Begin</div>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/SkyShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CloudShader.js"></script>
-    <script>
-        let scene, camera, renderer, sky, sunSphere;
-
-        function initScene() {
-            // Scene setup
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            renderer = new THREE.WebGLRenderer({ 
-                canvas: document.getElementById('background-scene'),
-                alpha: true 
-            });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-
-            // Sky shader - use Sky from THREE.ShaderLib
-            sky = new THREE.Mesh(
-                new THREE.SphereGeometry(450000, 32, 32),
-                new THREE.ShaderMaterial({
-                    name: 'SkyShader',
-                    uniforms: THREE.ShaderLib['sky'].uniforms,
-                    vertexShader: THREE.ShaderLib['sky'].vertexShader,
-                    fragmentShader: THREE.ShaderLib['sky'].fragmentShader,
-                    side: THREE.BackSide,
-                    depthWrite: false
-                })
-            );
-            scene.add(sky);
-
-            // Sun
-            sunSphere = new THREE.Mesh(
-                new THREE.SphereGeometry(20000, 16, 8),
-                new THREE.MeshBasicMaterial({ color: 0xffffff })
-            );
-            sunSphere.position.y = -700000;
-            sunSphere.visible = false;
-            scene.add(sunSphere);
-
-            // Sky parameters
-            const effectController = {
-                turbidity: 10,
-                rayleigh: 2,
-                mieCoefficient: 0.005,
-                mieDirectionalG: 0.8,
-                luminance: 1,
-                inclination: 0.49, // elevation / inclination
-                azimuth: 0.25, // Facing front
-                sun: true
-            };
-
-            const uniforms = sky.material.uniforms;
-            uniforms['turbidity'].value = effectController.turbidity;
-            uniforms['rayleigh'].value = effectController.rayleigh;
-            uniforms['mieCoefficient'].value = effectController.mieCoefficient;
-            uniforms['mieDirectionalG'].value = effectController.mieDirectionalG;
-
-            const theta = Math.PI * (effectController.inclination - 0.5);
-            const phi = 2 * Math.PI * (effectController.azimuth - 0.5);
-
-            sunSphere.position.x = 400000 * Math.cos(phi);
-            sunSphere.position.y = 400000 * Math.sin(phi) * Math.sin(theta);
-            sunSphere.position.z = 400000 * Math.sin(phi) * Math.cos(theta);
-
-            sky.material.uniforms['sunPosition'].value.copy(sunSphere.position);
-
-            camera.position.z = 5;
-
-            animate();
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-        }
-
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-
-        window.addEventListener('load', initScene);
-        window.addEventListener('resize', onWindowResize);
-    </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
