@@ -43,8 +43,8 @@ export function initThreeScene(canvasElement) {
     // Increase segments for smoother trench detail
     const planeGeometry = new THREE.PlaneGeometry(2000, 2000, 200, 200);
     const positions = planeGeometry.attributes.position.array;
-    const riverWidthHalf = 70; // Half-width of the river trench
-    const trenchDepth = 10; // Maximum depth of the trench
+    const riverWidthHalf = 100; // Increased half-width for a wider river
+    const trenchDepth = 30; // Increased maximum depth for a more prominent trench
 
     for (let i = 0; i < positions.length; i += 3) {
         const localX = positions[i];      // This is the local X coordinate of the vertex
