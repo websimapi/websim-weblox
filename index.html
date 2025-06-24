@@ -12,6 +12,7 @@
         body {
             margin: 0;
             padding: 0;
+            overflow: hidden; /* Prevent scrollbars from 3D scene */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,10 +20,36 @@
             background-color: black;
             font-family: Arial, sans-serif;
             text-align: center;
+        }
+        #splash-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-image: url('/weblox_background.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* To stack title and subtitles */
+            z-index: 10; /* Ensure it's on top of the canvas initially */
+            transition: opacity 2s ease-in-out; /* Smooth fade out */
+        }
+        #splash-screen.fade-out {
+            opacity: 0;
+            pointer-events: none; /* Make it unclickable after fade */
+        }
+        #three-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block; /* Remove extra space below canvas */
+            z-index: 5; /* Below splash screen */
         }
         .title {
             color: white;
@@ -90,16 +117,28 @@
             margin-top: 20px;
         }
     </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+            }
+        }
+    </script>
 </head>
 <body>
-    <div>
-        <div class="title">
-            <span>W</span><span>E</span><span>B</span><span>L</span><span>O</span><span>X</span>
+    <canvas id="three-canvas"></canvas>
+    <div id="splash-screen">
+        <div>
+            <div class="title">
+                <span>W</span><span>E</span><span>B</span><span>L</span><span>O</span><span>X</span>
+            </div>
+            <div class="subtitle">Websim Created Gaming</div>
+            <div class="subtitle">Limitless Creation</div>
+            <div class="press-prompt">Press Any Button To Begin</div>
         </div>
-        <div class="subtitle">Websim Created Gaming</div>
-        <div class="subtitle">Limitless Creation</div>
-        <div class="press-prompt">Press Any Button To Begin</div>
     </div>
+    <script type="module" src="/main.js"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
