@@ -2,15 +2,16 @@ import * as THREE from 'three';
 
 let scene, camera, renderer;
 let plane;
-let splashScreen;
+let splashBackgroundOverlay; // Renamed to reflect its new purpose
 
 function init() {
-    splashScreen = document.getElementById('splash-screen');
+    splashBackgroundOverlay = document.getElementById('splash-background-overlay'); // Get the new ID
     const canvas = document.getElementById('three-canvas');
 
     // Scene
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x87ceeb); // Light blue sky
+    scene.fog = new THREE.Fog(scene.background, 100, 1000); // Add fog for infinite look
 
     // Camera
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -35,14 +36,14 @@ function init() {
     directionalLight.shadow.mapSize.height = 2048;
     directionalLight.shadow.camera.near = 0.5;
     directionalLight.shadow.camera.far = 500;
-    directionalLight.shadow.camera.left = -200;
-    directionalLight.shadow.camera.right = 200;
-    directionalLight.shadow.camera.top = 200;
-    directionalLight.shadow.camera.bottom = -200;
+    directionalLight.shadow.camera.left = -500; // Expanded to cover a wider area
+    directionalLight.shadow.camera.right = 500;
+    directionalLight.shadow.camera.top = 500;
+    directionalLight.shadow.camera.bottom = -500;
     scene.add(directionalLight);
 
-    // Flat Terrain (Plane)
-    const planeGeometry = new THREE.PlaneGeometry(200, 200, 32, 32); // Large plane
+    // Flat Terrain (Plane) - Made much larger for an infinite look
+    const planeGeometry = new THREE.PlaneGeometry(2000, 2000, 32, 32); // Large plane
     const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x567d46, side: THREE.DoubleSide }); // Greenish material
     plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.rotation.x = -Math.PI / 2; // Rotate to be flat on the XZ plane
@@ -52,10 +53,9 @@ function init() {
     // Initial render before fading out splash screen
     renderer.render(scene, camera);
 
-    // Fade out splash screen after a short delay to ensure everything is rendered
-    // This simulates the "loading in" of the 3D scene.
+    // Fade out only the background image after a short delay
     setTimeout(() => {
-        splashScreen.classList.add('fade-out');
+        splashBackgroundOverlay.classList.add('fade-out');
     }, 500); // 500ms delay after init to allow initial render
 
     // Animation loop

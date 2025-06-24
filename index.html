@@ -21,7 +21,7 @@
             font-family: Arial, sans-serif;
             text-align: center;
         }
-        #splash-screen {
+        #splash-background-overlay { /* New ID for the fading background image */
             position: absolute;
             top: 0;
             left: 0;
@@ -31,16 +31,24 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            z-index: 10; /* Ensure it's on top of the canvas initially */
+            transition: opacity 2s ease-in-out; /* Smooth fade out */
+        }
+        #splash-background-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none; /* Make it unclickable after fade */
+        }
+        #title-text-overlay { /* New ID for the persistent text overlay */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column; /* To stack title and subtitles */
-            z-index: 10; /* Ensure it's on top of the canvas initially */
-            transition: opacity 2s ease-in-out; /* Smooth fade out */
-        }
-        #splash-screen.fade-out {
-            opacity: 0;
-            pointer-events: none; /* Make it unclickable after fade */
+            z-index: 15; /* Ensure it's on top of the fading background and canvas */
         }
         #three-canvas {
             position: absolute;
@@ -49,7 +57,7 @@
             width: 100%;
             height: 100%;
             display: block; /* Remove extra space below canvas */
-            z-index: 5; /* Below splash screen */
+            z-index: 5; /* Below splash screen and title overlay */
         }
         .title {
             color: white;
@@ -128,7 +136,8 @@
 </head>
 <body>
     <canvas id="three-canvas"></canvas>
-    <div id="splash-screen">
+    <div id="splash-background-overlay"></div> <!-- This div will hold the background image and fade out -->
+    <div id="title-text-overlay"> <!-- This div will hold the text and remain visible -->
         <div>
             <div class="title">
                 <span>W</span><span>E</span><span>B</span><span>L</span><span>O</span><span>X</span>
